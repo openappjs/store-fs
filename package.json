@@ -1,0 +1,28 @@
+{
+  "name": "store-fs",
+  "version": "1.0.0",
+  "description": "use a directory tree as a store",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:openappjs/store-fs"
+  },
+  "keywords": [
+    "store"
+  ],
+  "author": "",
+  "license": "AGPLv3",
+  "bugs": {
+    "url": "https://github.com/openappjs/store-fs/issues"
+  },
+  "homepage": "https://github.com/openappjs/store-fs",
+  "dependencies": {
+    "directory-tree": "^0.1.1",
+    "lodash.values": "^2.4.1",
+    "set-in": "git://github.com/openappjs/set-in",
+    "traverse": "^0.6.6"
+  }
+}
