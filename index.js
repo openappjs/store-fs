@@ -13,6 +13,7 @@ function Store (options) {
 
   this.path = options.path || "";
   this.types = options.types;
+  this.root = options.root;
 }
 
 Object.defineProperties(Store, {
@@ -48,12 +49,16 @@ Object.defineProperties(Store.prototype, {
           var dirname = Path.dirname(obj.path);
           var extname = Path.extname(obj.path);
           var basename = Path.basename(obj.path, extname);
+          var path = obj.path;
+          if (self.root) {
+            path = Path.relative(self.root, self.path);
+          }
   
           // get path to file with extname
-          var fsPath = Path.join(self.path, dirname, basename + extname)
+          var fsPath = Path.join(self.path, dirname, basename + extname);
 
           // get path to content without extname
-          var slashPath = Path.join(self.path, dirname, basename);
+          var slashPath = Path.join(path, dirname, basename);
           var contentPath = slashPath.split('/');
           
           // get content from filesystem
@@ -63,7 +68,8 @@ Object.defineProperties(Store.prototype, {
           setIn(objects, contentPath, content);
         }
       });
-      console.log(objects);
+      console.log("output", objects);
+      return objects;
     },
   },
   save: function () {
