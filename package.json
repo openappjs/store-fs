@@ -24,5 +24,8 @@
     "lodash.values": "^2.4.1",
     "set-in": "git://github.com/openappjs/set-in",
     "traverse": "^0.6.6"
+  },
+  "devDependencies": {
+    "js-yaml": "^3.2.2"
   }
 }

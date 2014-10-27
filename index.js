@@ -24,24 +24,16 @@ Object.defineProperties(Store.prototype, {
   loadSync: {
     value: function () {
       console.log("loading sync");
+      var exts = Object.keys(this.types)
+        .map(function (s) {
+          return "."+s;
+        });
       var tree = directoryTree(
         this.path,
-        Object.keys(this.types)
-          .map(function (s) {
-            return "."+s;
-          })
+        exts
       );
       objects = {};
-    /*
-      function traverse(tree, path) {
-        if (tree.type === 'directory') {
-          var newPath = path.concat([obj.name])
 
-        } else if (tree.type === 'file'){
-          
-        }
-      }
-    */
       var self = this;
       traverse(tree).forEach(function (obj) {
         if (obj.type === "file") {
@@ -49,10 +41,15 @@ Object.defineProperties(Store.prototype, {
           var dirname = Path.dirname(obj.path);
           var extname = Path.extname(obj.path);
           var basename = Path.basename(obj.path, extname);
+
           var path = obj.path;
+          // relative-ize path to root
           if (self.root) {
             path = Path.relative(self.root, self.path);
           }
+
+          // get type of content
+          var typename = extname.slice(1);
   
           // get path to file with extname
           var fsPath = Path.join(self.path, dirname, basename + extname);
@@ -64,11 +61,15 @@ Object.defineProperties(Store.prototype, {
           // get content from filesystem
           var content = fs.readFileSync(fsPath).toString();
 
-          // set
+          if (exts.indexOf(extname) !== -1) {
+            content = self.types[typename].from(content)
+          }
+
+          // set content in object store
           setIn(objects, contentPath, content);
         }
       });
-      console.log("output", objects);
+      console.log("output", JSON.stringify(objects, null, 2));
       return objects;
     },
   },
